@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistem Manajemen Pesanan Toko</title>
+</head>
+<body>
+  <h2>Sistem Manajemen Pesanan (Demo)</h2>
+  <button onclick="menuUtama()">Mulai Sistem</button>
+
+  <script>
+    // ==========================
+    // DATA PRODUK
+    // ==========================
+    let produkToko = [
+      { id: 1, nama: "Laptop", harga: 7000000, stok: 5 },
+      { id: 2, nama: "Mouse", harga: 200000, stok: 10 },
+      { id: 3, nama: "Keyboard", harga: 350000, stok: 7 }
+    ];
+
+    // ==========================
+    // DATA PELANGGAN & PESANAN
+    // ==========================
+    let pelangganToko = [
+      { id: 1, nama: "Sabrina" },
+      { id: 2, nama: "Andi" }
+    ];
+
+    let pesananToko = [];
+
+    // ==========================
+    // FUNGSI
+    // ==========================
+    function tampilkanProduk() {
+      let daftar = "Daftar Produk:\n";
+      produkToko.forEach(p => {
+        daftar += `ID: ${p.id} | ${p.nama} | Rp${p.harga} | Stok: ${p.stok}\n`;
+      });
+      alert(daftar);
+    }
+
+    function tambahProduk() {
+      let nama = prompt("Masukkan nama produk:");
+      let harga = parseInt(prompt("Masukkan harga produk:"));
+      let stok = parseInt(prompt("Masukkan stok produk:"));
+      let idBaru = produkToko.length > 0 ? produkToko[produkToko.length - 1].id + 1 : 1;
+      produkToko.push({ id: idBaru, nama, harga, stok });
+      alert(`Produk '${nama}' berhasil ditambahkan.`);
+    }
+
+    function hapusProduk() {
+      let id = parseInt(prompt("Masukkan ID produk yang ingin dihapus:"));
+      let index = produkToko.findIndex(p => p.id === id);
+      if (index !== -1) {
+        alert(`Produk '${produkToko[index].nama}' berhasil dihapus.`);
+        produkToko.splice(index, 1);
+      } else {
+        alert("Produk tidak ditemukan.");
+      }
+    }
+
+    function tampilkanPelanggan() {
+      let daftar = "Daftar Pelanggan:\n";
+      pelangganToko.forEach(p => {
+        daftar += `ID: ${p.id} | Nama: ${p.nama}\n`;
+      });
+      alert(daftar);
+    }
+
+    function tambahPelanggan() {
+      let nama = prompt("Masukkan nama pelanggan:");
+      let idBaru = pelangganToko.length > 0 ? pelangganToko[pelangganToko.length - 1].id + 1 : 1;
+      pelangganToko.push({ id: idBaru, nama });
+      alert(`Pelanggan '${nama}' berhasil ditambahkan.`);
+    }
+
+    function buatPesanan() {
+      let idPelanggan = parseInt(prompt("Masukkan ID pelanggan:"));
+      let idProduk = parseInt(prompt("Masukkan ID produk:"));
+      let jumlah = parseInt(prompt("Masukkan jumlah pembelian:"));
+
+      let pelanggan = pelangganToko.find(p => p.id === idPelanggan);
+      let produk = produkToko.find(p => p.id === idProduk);
+
+      if (!pelanggan) {
+        alert("Pelanggan tidak ditemukan.");
+        return;
+      }
+      if (!produk) {
+        alert("Produk tidak ditemukan.");
+        return;
+      }
+      if (produk.stok < jumlah) {
+        alert(`Stok produk '${produk.nama}' tidak mencukupi.`);
+        return;
+      }
+
+      let total = produk.harga * jumlah;
+      produk.stok -= jumlah;
+
+      let pesanan = {
+        id: pesananToko.length + 1,
+        pelanggan: pelanggan.nama,
+        produk: produk.nama,
+        jumlah,
+        total
+      };
+
+      pesananToko.push(pesanan);
+      alert(`Pesanan berhasil dibuat untuk ${pelanggan.nama}. Total: Rp${total}`);
+    }
+
+    function tampilkanPesanan() {
+      if (pesananToko.length === 0) {
+        alert("Belum ada pesanan.");
+        return;
+      }
+      let daftar = "Daftar Pesanan:\n";
+      pesananToko.forEach(p => {
+        daftar += `ID: ${p.id} | ${p.pelanggan} membeli ${p.jumlah} ${p.produk} | Total: Rp${p.total}\n`;
+      });
+      alert(daftar);
+    }
+
+    // ==========================
+    // MENU UTAMA
+    // ==========================
+    function menuUtama() {
+      let pilih;
+      do {
+        pilih = prompt(
+          "=== Menu Utama ===\n" +
+          "1. Tampilkan Produk\n" +
+          "2. Tambah Produk\n" +
+          "3. Hapus Produk\n" +
+          "4. Tampilkan Pelanggan\n" +
+          "5. Tambah Pelanggan\n" +
+          "6. Buat Pesanan\n" +
+          "7. Tampilkan Pesanan\n" +
+          "0. Keluar\n" +
+          "Pilih menu:"
+        );
+
+        switch (pilih) {
+          case "1": tampilkanProduk(); break;
+          case "2": tambahProduk(); break;
+          case "3": hapusProduk(); break;
+          case "4": tampilkanPelanggan(); break;
+          case "5": tambahPelanggan(); break;
+          case "6": buatPesanan(); break;
+          case "7": tampilkanPesanan(); break;
+          case "0": alert("Keluar dari sistem."); break;
+          default: alert("Pilihan tidak valid.");
+        }
+      } while (pilih !== "0");
+    }
+  </script>
+</body>
+</html>
