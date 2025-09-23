@@ -2,143 +2,199 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Data Pegawai</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Manajemen Transportasi</title>
   <style>
     body {
-        font-family: Arial, sans-serif;
-        background: #f8f9fa;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 40px 20px 30px 40px;
-
-        justify-content: center;
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f4f4f4;
     }
-    h2 {
-        color: #333;
-        background: linear-gradient(90deg, #6a11cb, #2575fc);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-size: 28px;
-        margin-bottom: 40px;
+    h1 {
+      color: #333;
     }
-    table {
-        width: 100%;       
-        table-layout: auto; 
-        border-collapse: collapse;
-        background: white;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        border-radius: 12px;
-        overflow: hidden;
+    .form-container {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
     }
-    thead {
-        background: linear-gradient(90deg, #2575fc, #6a11cb);
-        color: white;
+    label {
+      display: block;
+      margin: 8px 0 4px;
     }
-    th, td {
-        border: 1px solid #ddd;
-        padding: 12px;
-        text-align: center;
-        font-size: 15px;
+    input, select, button {
+      padding: 8px;
+      width: 100%;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
-    tbody tr:hover {
-        background-color: #f1f1f1;
+    button {
+      background: #28a745;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
     }
-    tfoot {
-        background-color: #f9f9f9;
-        font-weight: bold;
-        color: #444;
+    button:hover {
+      background: #218838;
+    }
+    .list {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .list ul {
+      list-style: none;
+      padding: 0;
+    }
+    .list li {
+      margin: 6px 0;
+      padding: 8px;
+      background: #f9f9f9;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
-  <h2>Data Pegawai</h2>
 
-  <table id="tabelPegawai">
-    <thead>
-      <tr>
-        <th>Nama Pegawai</th>
-        <th>Umur</th>
-        <th>Jabatan</th>
-        <th>Status</th>
-        <th>Gaji Pokok</th>
-        <th>Tunjangan Jabatan</th>
-        <th>BPJS</th>
-        <th>Tunjangan Keluarga</th>
-        <th>Total Gaji</th>
-      </tr>
-    </thead>
-    <tbody id="isiTabel">
-      <!-- Data otomatis dari JS -->
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="9" id="totalKeseluruhan"></td>
-      </tr>
-    </tfoot>
-  </table>
+  <h1>Sistem Manajemen Transportasi</h1>
+
+  <div class="form-container">
+    <h3>Form Penyewaan Kendaraan</h3>
+    <label>Nama:</label>
+    <input type="text" id="nama">
+
+    <label>Nomor Telepon:</label>
+    <input type="text" id="telepon">
+
+    <label>Jenis Kendaraan:</label>
+    <select id="jenis">
+      <option value="Mobil">Mobil</option>
+      <option value="Motor">Motor</option>
+    </select>
+
+    <label>Merk:</label>
+    <input type="text" id="merk">
+
+    <label>Model:</label>
+    <input type="text" id="model">
+
+    <label>Tahun:</label>
+    <input type="number" id="tahun">
+
+    <button onclick="tambahPelanggan()">Sewa Kendaraan</button>
+  </div>
+
+  <div class="list">
+    <h3>Daftar Pelanggan</h3>
+    <ul id="daftarPelanggan"></ul>
+  </div>
 
   <script>
-    // Daftar pegawai
-    let pegawai = [
-      { nama: "Dodi Prayodi", umur: 25, jabatan: "Manajer", status: "Menikah" },
-      { nama: "Rina Oktavia", umur: 27, jabatan: "Asisten Manajer", status: "Belum Menikah" },
-      { nama: "Budi Santoso", umur: 23, jabatan: "Staff", status: "Menikah" }
-    ];
-
-    function formatRupiah(angka) {
-      return "Rp " + angka.toLocaleString("id-ID");
+    // Parent class
+    class Kendaraan {
+      constructor(merk, model, tahun) {
+        this.merk = merk;
+        this.model = model;
+        this.tahun = tahun;
+      }
+      infoKendaraan() {
+        return `${this.merk} ${this.model} (${this.tahun})`;
+      }
     }
 
-    let isi = "";
-    let totalKeseluruhan = 0;
+    // Mobil
+    class Mobil extends Kendaraan {
+      constructor(merk, model, tahun) {
+        super(merk, model, tahun);
+      }
+      infoKendaraan() {
+        return `${super.infoKendaraan()} - Mobil`;
+      }
+    }
 
-    pegawai.forEach(p => {
-      // Tentukan Gaji Pokok
-      let gapok = 0;
-      if (p.jabatan === "Manajer") {
-        gapok = 15000000;
-      } else if (p.jabatan === "Asisten Manajer") {
-        gapok = 10000000;
-      } else if (p.jabatan === "Staff") {
-        gapok = 5000000;
+    // Motor
+    class Motor extends Kendaraan {
+      constructor(merk, model, tahun) {
+        super(merk, model, tahun);
+      }
+      infoKendaraan() {
+        return `${super.infoKendaraan()} - Motor`;
+      }
+    }
+
+    // Pelanggan
+    class Pelanggan {
+      constructor(nama, nomorTelepon, kendaraanDisewa) {
+        this.nama = nama;
+        this.nomorTelepon = nomorTelepon;
+        this.kendaraanDisewa = kendaraanDisewa;
+      }
+      infoPelanggan() {
+        return `${this.nama} (${this.nomorTelepon}) menyewa ${this.kendaraanDisewa.infoKendaraan()}`;
+      }
+    }
+
+    // Sistem Transportasi
+    class SistemTransportasi {
+      constructor() {
+        this.daftarPelanggan = [];
       }
 
-      // Tunjangan Jabatan 15%
-      let tunjanganJabatan = 0.15 * gapok;
+      sewaKendaraan(pelanggan) {
+        this.daftarPelanggan.push(pelanggan);
+      }
 
-      // BPJS 10%
-      let bpjs = 0.10 * gapok;
+      tampilkanPelanggan() {
+        const daftarEl = document.getElementById("daftarPelanggan");
+        daftarEl.innerHTML = "";
+        this.daftarPelanggan.forEach((p) => {
+          const li = document.createElement("li");
+          li.textContent = p.infoPelanggan();
+          daftarEl.appendChild(li);
+        });
+      }
+    }
 
-      // Tunjangan Keluarga
-      let tunjanganKeluarga = (p.status === "Menikah") ? 0.20 * gapok : 0;
+    // Buat instance sistem
+    const sistem = new SistemTransportasi();
 
-      // Total Gaji per pegawai
-      let total = gapok + tunjanganJabatan + bpjs + tunjanganKeluarga;
+    // Fungsi tambah pelanggan dari input form
+    function tambahPelanggan() {
+      const nama = document.getElementById("nama").value;
+      const telepon = document.getElementById("telepon").value;
+      const jenis = document.getElementById("jenis").value;
+      const merk = document.getElementById("merk").value;
+      const model = document.getElementById("model").value;
+      const tahun = document.getElementById("tahun").value;
 
-      // Tambah ke total keseluruhan
-      totalKeseluruhan += total;
+      if (!nama || !telepon || !merk || !model || !tahun) {
+        alert("Harap isi semua data!");
+        return;
+      }
 
-      isi += `
-        <tr>
-          <td>${p.nama}</td>
-          <td>${p.umur} Tahun</td>
-          <td>${p.jabatan}</td>
-          <td>${p.status}</td>
-          <td>${formatRupiah(gapok)}</td>
-          <td>${formatRupiah(tunjanganJabatan)}</td>
-          <td>${formatRupiah(bpjs)}</td>
-          <td>${formatRupiah(tunjanganKeluarga)}</td>
-          <td style="font-weight:bold; color:#2575fc;">${formatRupiah(total)}</td>
-        </tr>
-      `;
-    });
+      let kendaraan;
+      if (jenis === "Mobil") {
+        kendaraan = new Mobil(merk, model, tahun);
+      } else {
+        kendaraan = new Motor(merk, model, tahun);
+      }
 
-    document.getElementById("isiTabel").innerHTML = isi;
+      const pelanggan = new Pelanggan(nama, telepon, kendaraan);
+      sistem.sewaKendaraan(pelanggan);
+      sistem.tampilkanPelanggan();
 
-    // Menampilkan total keseluruhan
-    document.getElementById("totalKeseluruhan").innerText =
-      `💰 Total Gaji Keseluruhan: ${formatRupiah(totalKeseluruhan)}`;
+      // reset form
+      document.getElementById("nama").value = "";
+      document.getElementById("telepon").value = "";
+      document.getElementById("merk").value = "";
+      document.getElementById("model").value = "";
+      document.getElementById("tahun").value = "";
+    }
   </script>
+
 </body>
 </html>
