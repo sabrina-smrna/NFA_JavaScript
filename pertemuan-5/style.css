@@ -1,0 +1,126 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    margin: 0;
+    padding: 10px;
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 900px;
+    margin: 15px auto;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input, button {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    flex: 1;
+    min-width: 150px;
+}
+
+button {
+    background: #ff7675;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+    flex: none;
+}
+
+button:hover {
+    background: #d63031;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #eee;
+}
+
+th {
+    background: #ff7675;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.hapus-btn {
+    background: #e17055;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.hapus-btn:hover {
+    background: #d63031;
+}
+
+/* --- RESPONSIVE --- */
+/* default: desktop tampil tabel, sembunyikan card */
+#produkCards { display: none; }
+
+@media (max-width: 600px) {
+    table { display: none; }
+    #produkCards { display: block; }
+
+    .produk-card {
+    background: #fff5f5;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .produk-card h4 {
+    margin: 0 0 5px;
+    color: #333;
+    }
+
+    .produk-card p {
+    margin: 3px 0;
+    color: #555;
+    font-size: 14px;
+    }
+
+    .produk-card .hapus-btn {
+    margin-top: 10px;
+    width: 100%;
+    }
+}

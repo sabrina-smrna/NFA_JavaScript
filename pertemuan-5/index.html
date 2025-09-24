@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manajemen Produk</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>📦 Manajemen Produk</h2>
+
+    <div class="form-section">
+      <input type="text" id="namaProduk" placeholder="Nama Produk">
+      <input type="number" id="hargaProduk" placeholder="Harga Produk">
+      <button id="tambahBtn">Tambah Produk</button>
+    </div>
+
+    <!-- Tabel (desktop) -->
+    <table id="tabelProduk">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nama</th>
+          <th>Harga</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- Card (mobile) -->
+    <div id="produkCards"></div>
+  </div>
+
+  <script>
+    let produkList = [
+      { id: 1, nama: "Laptop", harga: 12000000 },
+      { id: 2, nama: "Smartphone", harga: 5000000 },
+      { id: 3, nama: "Mouse", harga: 200000 },
+      { id: 4, nama: "Keyboard", harga: 350000 },
+      { id: 5, nama: "Monitor", harga: 2500000 }
+    ];
+    let idCounter = produkList.length;
+
+    const eventHandler = {};
+
+    function tambahProduk(id, nama, harga) {
+      const newProduk = { id, nama, harga };
+      produkList = [...produkList, newProduk];
+    }
+
+    function hapusProduk(...id) {
+      produkList = produkList.filter((p) => !id.includes(p.id));
+    }
+
+    function tampilkanProduk() {
+      const tbody = document.querySelector("#tabelProduk tbody");
+      const cards = document.getElementById("produkCards");
+
+      tbody.innerHTML = "";
+      cards.innerHTML = "";
+
+      produkList.forEach(({ id, nama, harga }) => {
+        // versi tabel (desktop)
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${id}</td>
+          <td>${nama}</td>
+          <td>Rp${harga.toLocaleString("id-ID")}</td>
+          <td><button class="hapus-btn" onclick="hapusProduk(${id}); tampilkanProduk()">Hapus</button></td>
+        `;
+        tbody.appendChild(row);
+
+        // versi card (mobile)
+        const card = document.createElement("div");
+        card.className = "produk-card";
+        card.innerHTML = `
+          <h4>${nama}</h4>
+          <p><strong>ID:</strong> ${id}</p>
+          <p><strong>Harga:</strong> Rp${harga.toLocaleString("id-ID")}</p>
+          <button class="hapus-btn" onclick="hapusProduk(${id}); tampilkanProduk()">Hapus</button>
+        `;
+        cards.appendChild(card);
+      });
+    }
+
+    document.getElementById("tambahBtn").addEventListener("click", () => {
+      const nama = document.getElementById("namaProduk").value;
+      const harga = document.getElementById("hargaProduk").value;
+
+      if (nama && harga) {
+        idCounter++;
+        tambahProduk(idCounter, nama, parseInt(harga));
+        tampilkanProduk();
+        document.getElementById("namaProduk").value = "";
+        document.getElementById("hargaProduk").value = "";
+      } else {
+        alert("Isi nama dan harga produk terlebih dahulu!");
+      }
+    });
+
+    tampilkanProduk();
+  </script>
+</body>
+</html>
