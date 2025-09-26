@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Tugas Pertemuan 6 JS</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 20px; 
+    }
+    table { 
+      border-collapse: collapse; 
+      width: 100%; margin-top: 20px; 
+    }
+    th, td { 
+      border: 1px solid #ccc; 
+      padding: 8px; text-align: left; 
+    }
+    th { 
+      background-color: #f2f2f2; 
+    }
+    button { 
+      background-color: red; 
+      color: white; 
+      border: none; 
+      padding: 5px 10px; 
+      cursor: pointer; 
+    }
+    button:hover { 
+      background-color: darkred; 
+    }
+    form { 
+      margin-bottom: 20px; 
+    }
+    input { 
+      margin: 5px; padding: 5px; 
+    }
+  </style>
+</head>
+<body>
+  <h1>Tugas Pertemuan 6 - JavaScript</h1>
+  <form id="form" onsubmit="event.preventDefault(); tambahData();">
+    <input type="text" id="nama" placeholder="Nama">
+    <input type="number" id="umur" placeholder="Umur">
+    <input type="text" id="alamat" placeholder="Alamat">
+    <input type="email" id="email" placeholder="Email">
+    <button type="submit">Tambah Data</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>Umur</th>
+        <th>Alamat</th>
+        <th>Email</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+
+  <script src="data.js"></script>
+  <script src="controller.js"></script>
+</body>
+</html>
