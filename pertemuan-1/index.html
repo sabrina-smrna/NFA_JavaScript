@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Tugas 1 - Menghitung Luas Bangun Datar</title>
+</head>
+<body>
+    <h2>Menghitung Luas Bangun Datar</h2>
+
+    <!-- Form input -->
+    <form id="formLuas">
+        <h3>Persegi Panjang</h3>
+        Panjang: <input type="number" id="panjang"><br><br>
+        Lebar: <input type="number" id="lebar"><br><br>
+
+        <h3>Bujur Sangkar</h3>
+        Sisi: <input type="number" id="sisi"><br><br>
+
+        <h3>Segitiga</h3>
+        Alas: <input type="number" id="alas"><br><br>
+        Tinggi: <input type="number" id="tinggi"><br><br>
+
+        <button type="button" onclick="hitungLuas()">Hitung</button>
+    </form>
+
+    <h3>Hasil Perhitungan:</h3>
+    <div id="output"></div>
+
+    <script>
+        // persegi panjang
+        function luasPersegiPanjang(panjang, lebar) {
+            return panjang * lebar;
+        }
+
+        // bujur sangkar
+        function luasBujurSangkar(sisi) {
+            return sisi * sisi;
+        }
+
+        // segitiga
+        function luasSegitiga(alas, tinggi) {
+            return 0.5 * alas * tinggi;
+        }
+
+        function hitungLuas() {
+            let panjang = document.getElementById("panjang").value;
+            let lebar = document.getElementById("lebar").value;
+            let sisi = document.getElementById("sisi").value;
+            let alas = document.getElementById("alas").value;
+            let tinggi = document.getElementById("tinggi").value;
+
+            panjang = Number(panjang);
+            lebar = Number(lebar);
+            sisi = Number(sisi);
+            alas = Number(alas);
+            tinggi = Number(tinggi);
+
+            let hasilPersegiPanjang = luasPersegiPanjang(panjang, lebar);
+            let hasilBujurSangkar = luasBujurSangkar(sisi);
+            let hasilSegitiga = luasSegitiga(alas, tinggi);
+
+            document.getElementById("output").innerHTML = `
+                <p><b>Luas Persegi Panjang</b> (${panjang} x ${lebar}) = ${hasilPersegiPanjang}</p>
+                <p><b>Luas Bujur Sangkar</b> (sisi ${sisi}) = ${hasilBujurSangkar}</p>
+                <p><b>Luas Segitiga</b> (alas ${alas} x tinggi ${tinggi}) = ${hasilSegitiga}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
